@@ -24,7 +24,7 @@ Run-e local:
 
 import os
 import time
-from collections import defaultdict
+from collections import defaultdict, deque
 
 import numpy as np
 from dotenv import load_dotenv
@@ -63,12 +63,32 @@ ALLOWED_ORIGINS = [
 # rate limit, ye script-e sade mitune tu chand daghighe quota-ye rooz-et
 # ro besuzune.
 #
-# In pia'de-sazi tuye HAFEZE-st: age server restart she paak mishe, va
-# age chand instance dashte bashi har kodum shomarande-ye khodesh ro
-# dare. Baraye traffic-e in site kafie. (Baraye jeddi-tar: Redis.)
+# DO LAYE, chon har kodum ye chiz-e motefavet ro migire:
+#
+#   1. PER-IP  -> jelo-ye ye nafar ke spam mikone
+#   2. GLOBAL  -> jelo-ye ye nafar ke ba 100 ta proxy miad. Per-IP unja
+#                 hich kar nemikone, chon har IP "mojaz"-e. Saghf-e koli
+#                 tanha chiz-i-e ke jeloshe migire.
+#
+# Hardud eftetahi-e; ba tavajoh be traffic-e vaghei tanzim mishe.
 RATE_LIMIT_REQUESTS = 10
 RATE_LIMIT_WINDOW = 60  # sanie
+GLOBAL_LIMIT_REQUESTS = 200
+GLOBAL_LIMIT_WINDOW = 3600  # sanie (ye saat)
+
 _request_log: dict[str, list[float]] = defaultdict(list)
+_global_log: deque[float] = deque()
+
+# CHERA IN PAAKSAZI LAZEM-E
+# -------------------------
+# _request_log har IP-ye jadid ro negah midare va khodesh HICH VAGHT
+# paak nemikone. Rooye ye instance-e 512MB, ye attack-e IP-rotation
+# mitune RAM ro por kone - ya'ni hamun "service ro biar paiin" ke rate
+# limit gharar bud jeloshe ro begire.
+#
+# Pas har chand vaght yek bar IP-haye ghadimi ro mindazim dur.
+_last_cleanup = time.time()
+CLEANUP_INTERVAL = 300  # sanie
 
 
 class ChatRequest(BaseModel):
@@ -100,27 +120,103 @@ _client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 _chunks, _matrix = load_index()
 
 
+def client_ip(request: Request) -> str:
+    """
+    IP-YE VAGHEI, NA IP-YE PROXY
+    ----------------------------
+    request.client.host IP-ye kasi ro mide ke MOSTAGHIM be app vasl
+    shode. Rooye Render (va aksar-e host-ha) app posht-e ye proxy-e,
+    pas un meghdar hamishe IP-ye proxy-e - na bazdid-konande.
+
+    Natije: rate limit ya hame ro yek nafar hesab mikone (do nafar-e
+    bi-gonah hamzaman -> dovomi 429 mikhore), ya aslan shelik nemikone.
+
+    IP-ye vaghei tuye X-Forwarded-For hast. Format-esh:
+        client, proxy1, proxy2
+    Avvalin meghdar client-e.
+
+    DAGHAT: in header ro har kasi mitune ja bezane. Injaa ghabul-esh
+    mikonim chon Render khodesh un ro set mikone va nemishe az birun
+    override kard. Age rooze-i host avaz she, in farz bayad dobare
+    check beshe.
+    """
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.client.host if request.client else "unknown"
+
+
+def cleanup_old_entries(now: float) -> None:
+    """IP-haye ghadimi ro dur mindaze ta _request_log bi-nahayat roshd nakone."""
+    global _last_cleanup
+    if now - _last_cleanup < CLEANUP_INTERVAL:
+        return
+    stale = [
+        ip
+        for ip, times in _request_log.items()
+        if not times or now - times[-1] > RATE_LIMIT_WINDOW
+    ]
+    for ip in stale:
+        del _request_log[ip]
+    _last_cleanup = now
+
+
 def check_rate_limit(ip: str) -> None:
     now = time.time()
+    cleanup_old_entries(now)
+
+    # laye-ye 2: saghf-e koli
+    while _global_log and now - _global_log[0] > GLOBAL_LIMIT_WINDOW:
+        _global_log.popleft()
+    if len(_global_log) >= GLOBAL_LIMIT_REQUESTS:
+        raise HTTPException(
+            status_code=429,
+            detail="The assistant is busy right now. Please try again later.",
+        )
+
+    # laye-ye 1: per-IP
     recent = [t for t in _request_log[ip] if now - t < RATE_LIMIT_WINDOW]
     if len(recent) >= RATE_LIMIT_REQUESTS:
         raise HTTPException(
             status_code=429,
             detail="Too many requests. Please wait a moment.",
         )
+
     recent.append(now)
     _request_log[ip] = recent
+    _global_log.append(now)
+
+
+@app.get("/")
+def root():
+    """
+    Bedun-e in, http://localhost:8000 ye 404-e khoshk mide va adam fekr
+    mikone server balaa nayumade. In ye "index"-e kuchik-e ke migeh
+    service zende-st va che route-haii dare.
+    """
+    return {
+        "service": "Portfolio Chatbot API",
+        "endpoints": {
+            "GET /health": "liveness check",
+            "POST /chat": 'body: {"message": "your question"}',
+        },
+    }
 
 
 @app.get("/health")
 def health():
     """Host-ha in ro seda mizanan ta bebinan service zende-st."""
-    return {"status": "ok", "chunks": len(_chunks)}
+    return {
+        "status": "ok",
+        "chunks": len(_chunks),
+        "tracked_ips": len(_request_log),
+        "requests_this_hour": len(_global_log),
+    }
 
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(body: ChatRequest, request: Request):
-    check_rate_limit(request.client.host if request.client else "unknown")
+    check_rate_limit(client_ip(request))
 
     try:
         embed_response = _client.models.embed_content(
