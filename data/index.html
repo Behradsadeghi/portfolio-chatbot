@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Behrad Sadeghi - Personal Website</title>
+  <meta name="description" content="Behrad Sadeghi - AI/ML Engineer building production LLM systems, RAG pipelines, and multi-agent architectures on Google Cloud and Vertex AI.">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Behrad Sadeghi - AI/ML Engineer">
+  <meta property="og:description" content="Behrad Sadeghi - AI/ML Engineer building production LLM systems, RAG pipelines, and multi-agent architectures on Google Cloud and Vertex AI.">
+  <meta property="og:image" content="https://behradsadeghi.github.io/assets/images/og-image.jpg"> <!-- Use a valid image URL -->
+  <meta property="og:url" content="https://behradsadeghi.github.io/">
+  <meta property="og:type" content="website">
+
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Behrad Sadeghi",
+    "url": "https://behradsadeghi.github.io/",
+    "description": "Behrad Sadeghi's personal website showcasing work and projects."
+  }
+  </script>
+
+  <!-- favicon -->
+  <link rel="shortcut icon" href="./assets/images/TGBicon.jpg" type="image/x-icon">
+
+  <!-- custom css link -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <!-- google font link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+
+<body>
+
+  <!--
+    - #MAIN
+  -->
+
+  <main>
+
+    <!--
+      - #SIDEBAR
+    -->
+
+    <aside class="sidebar" data-sidebar>
+
+      <div class="sidebar-body">
+
+        <div class="sidebar-info">
+
+          <figure class="avatar-box">
+            <img src="./assets/images/Bbam2.jpg" alt="Behrad Sadeghi" width="80">
+          </figure>
+
+          <div class="info-content">
+            <h1 class="name" title="Behrad Sadeghi">Behrad Sadeghi</h1>
+
+            <p class="title">AI/ML Engineer | MSc Data Science</p>
+
+          </div>
+          <a href="/assets/BehradSadeghi_Job_resume.pdf" style="width: 100%;" download="Behrad_Sadeghi_CV.pdf">
+            <button class="download-cv-btn">Download CV</button>
+          </a>
+          <button class="info_more-btn" data-sidebar-btn>
+            <span>Show Contacts</span>
+
+            <ion-icon name="chevron-down"></ion-icon>
+          </button>
+
+        </div>
+
+        <div class="sidebar-info_more">
+
+          <div class="separator"></div>
+
+          <ul class="contacts-list">
+
+            <li class="contact-item">
+
+              <div class="icon-box">
+                <ion-icon name="mail-outline"></ion-icon>
+              </div>
+
+              <div class="contact-info">
+                <p class="contact-title">Email</p>
+
+                <a href="mailto:behradsadeghi.gu@gmail.com" class="contact-link">behradsadeghi.gu@gmail.com</a>
+              </div>
+
+            </li>
+
+            <li class="contact-item">
+
+              <div class="icon-box">
+                <ion-icon name="phone-portrait-outline"></ion-icon>
+              </div>
+
+              <div class="contact-info">
+                <p class="contact-title">Phone</p>
+
+                <a href="tel:+39 3518261801" class="contact-link">+39 3518261801</a>
+              </div>
+
+            </li>
+
+            <li class="contact-item">
+
+              <div class="icon-box">
+                <ion-icon name="calendar-outline"></ion-icon>
+              </div>
+
+              <div class="contact-info">
+                <p class="contact-title">Birthday</p>
+
+                <time datetime="2000-12-18">December 18, 2000</time>
+              </div>
+
+            </li>
+
+            <li class="contact-item">
+
+              <div class="icon-box">
+                <ion-icon name="location-outline"></ion-icon>
+              </div>
+
+              <div class="contact-info">
+                <p class="contact-title">Location</p>
+
+                <address>Milan, Italy</address>
+              </div>
+
+            </li>
+
+          </ul>
+
+          <div class="separator"></div>
+
+          <ul class="social-list">
+
+            <li class="social-item">
+              <a href="https://www.linkedin.com/in/behradsadeghi/" class="social-link">
+                <ion-icon name="logo-linkedin"></ion-icon>
+              </a>
+            </li>
+
+            <li class="social-item">
+              <a href="https://github.com/Behradsadeghi" class="social-link">
+                <ion-icon name="logo-github"></ion-icon>
+              </a>
+            </li>
+
+          
+
+          </ul>
+
+        </div>
+      </div>
+
+
+    </aside>
+
+
+
+
+    <!--
+      - #main-content
+    -->
+
+    <div class="main-content">
+
+      <!--
+        - #NAVBAR
+      -->
+
+      <nav class="navbar">
+
+        <ul class="navbar-list">
+
+          <li class="navbar-item">
+            <button class="navbar-link  active" data-nav-link>About</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Resume</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Projects</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Skills</button>
+          </li>
+
+   
+
+          <li class="mobile-only">
+            <a href="/assets/BehradSadeghi_Job_resume.pdf" download="Behrad_Sadeghi_CV.pdf">
+              <button>Download CV</button>
+            </a>
+          </li>
+
+
+        </ul>
+
+      </nav>
+
+
+
+
+
+      <!--
+        - #ABOUT
+      -->
+
+      <article class="about  active" data-page="about">
+
+        <header>
+          <h2 class="h2 article-title">About me</h2>
+        </header>
+
+        <section class="about-text">
+          <p>
+            I am an AI/ML Engineer currently building production LLM systems at Softlab S.p.A. in Milan, where I design multi-agent pipelines, RAG systems, and structured-output architectures on Google Cloud and Vertex AI using Gemini. Before that, I built a real-time fraud detection system at SnappBox, serving machine learning inference for a ride-sharing platform at scale.
+            I'm currently pursuing an M.Sc. in Data Science for Economics and Health at the University of Milan, and I'm passionate about turning research-grade ML ideas into reliable, production-ready systems — from agentic LLM workflows to graph-based and deep learning models.
+          </p>
+        </section>
+
+        <!--
+          - service
+        -->
+
+        <section class="service">
+
+          <h3 class="h3 service-title">Interests</h3>
+
+          <ul class="service-list">
+
+            <li class="service-item">
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Agentic & Multi-Agent Systems</h4>
+              </div>
+            </li>
+
+            <li class="service-item">
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Retrieval-Augmented Generation</h4>
+              </div>
+            </li>
+
+            <li class="service-item">
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">LLM Evaluation & Observability</h4>
+              </div>
+            </li>
+
+            <li class="service-item">
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Production ML Systems</h4>
+              </div>
+            </li>
+
+            <li class="service-item">
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Graph Neural Networks</h4>
+              </div>
+            </li>
+
+            <li class="service-item">
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Fraud Detection</h4>
+              </div>
+            </li>
+
+          </ul>
+
+        </section>
+
+      </article>
+
+      <!--
+        - #RESUME
+      -->
+
+      <article class="resume" data-page="resume">
+
+        <header>
+          <h2 class="h2 article-title">Resume</h2>
+        </header>
+
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Education</h3>
+          </div>
+
+        <ol class="timeline-list">
+
+  <li class="timeline-item">
+    <h4 class="h4 timeline-item-title">University of Milan (UniMi)</h4>
+    <span>2025 — Present</span>
+
+    <p class="timeline-text">
+      M.Sc in Data Science for Economics and Health
+    </p>
+  </li>
+
+  <li class="timeline-item">
+    <h4 class="h4 timeline-item-title">University of Guilan</h4>
+    <span>2019 — 2024</span>
+
+    <p class="timeline-text">
+      B.Sc in Computer Engineering
+      <br>
+      CGPA: 3.69/4
+    </p>
+  </li>
+
+</ol>
+
+        </section>
+
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="footsteps-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Work Experience</h3>
+          </div>
+
+          <ol class="timeline-list">
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">AI Engineer — Softlab S.p.A.</h4>
+
+              <span>May 2026 - Present · Milan, Italy</span>
+
+              <p class="timeline-text">
+                • Architected an automated monitoring platform for a 7-stage AI pipeline, computing KPI metrics from Firestore and surfacing root-cause failures from noisy Cloud Logging output — deployed as a scheduled, Terraform-managed Cloud Run Job.
+                <br><br>
+                • Designed and implemented an end-to-end Vertex AI batch inference pipeline that automatically summarized and classified previously unprocessed customer calls using Gemini structured outputs, eliminating manual first-pass triage while achieving 94% agreement with client-validated classifications and zero parsing failures.
+                <br><br>
+                • Engineered strict, campaign-specific response schemas that constrain Gemini outputs to a fixed set of valid categories, eliminating hallucinated or malformed model outputs across concurrent Vertex AI batch jobs — all within a fully configuration-driven architecture that lets new campaigns launch without modifying prompts or model code.
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Machine Learning Engineer — Fraud Detection, SnappBox</h4>
+
+              <span>Sep 2024 - Oct 2025 · Tehran, Iran</span>
+
+              <p class="timeline-text">
+                • Designed and deployed an end-to-end fraud detection system processing thousands of ride events daily, serving real-time inference via FastAPI REST APIs on Docker and Google Cloud. Engineered scalable feature pipelines in BigQuery, reducing false positives by 20% compared to the previous rule-based system.
+                <br><br>
+                • Developed machine learning models to detect anomalous rider behavior and coordinated fraud patterns, improving detection precision by 15%. Designed behavioral fraud indicators that helped avert an estimated 15–20% of fraud losses.
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Machine Learning Developer Intern — Infinite Modern Technology</h4>
+
+              <span>Feb 2023 - Aug 2023 · Tehran, Iran</span>
+
+              <p class="timeline-text">
+                • Processed and analyzed real-world datasets using Pandas, NumPy, and Seaborn; built automated EDA pipelines that reduced manual reporting time and surfaced actionable insights for business stakeholders.
+                <br><br>
+                • Trained and evaluated supervised and unsupervised ML models (classification, clustering) using Scikit-learn; tuned hyperparameters and validated results through cross-validation to support data-driven product decisions.
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Research Assistant — University of Guilan</h4>
+
+              <span>Feb 2022 - Jan 2023 · Rasht, Iran</span>
+
+              <p class="timeline-text">
+                • Led development of a cross-attention-based model for Nasal Fracture Detection on a novel, previously unexplored clinical dataset.
+              </p>
+
+            </li>
+
+          </ol>
+
+        </section>
+
+      </article>
+
+      <!--
+        - #Project
+      -->
+
+      <article class="portfolio" data-page="projects">
+
+  <header>
+    <h2 class="h2 article-title">Projects</h2>
+  </header>
+
+  <section class="timeline">
+
+    <div class="title-wrapper">
+      <div class="icon-box">
+        <ion-icon name="code-outline"></ion-icon>
+      </div>
+
+      <h3 class="h3">Selected Projects</h3>
+    </div>
+
+    <ol class="timeline-list">
+
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">
+          <a href="https://github.com/Behradsadeghi/Transaction-Fraud-Detection" target="_blank" rel="noopener noreferrer">
+            Transaction Fraud Detection Using GNNs and Tabular Models
+          </a>
+        </h4>
+
+        <p class="timeline-text">
+          Built a fraud detection system combining supervised (Tabular Transformers, Neural Networks) and semi-supervised
+          (GraphSAGE, Graph Attention Networks) models. Engineered a hybrid loss function for graph-based learning with
+          only 15% labeled data, achieving competitive F1 scores under realistic label scarcity.
+        </p>
+      </li>
+
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">
+          <a href="https://github.com/Behradsadeghi/FraudRide-Analytics" target="_blank" rel="noopener noreferrer">
+            FraudRide-Analytics
+          </a>
+        </h4>
+
+        <p class="timeline-text">
+          Analytics pipeline for detecting fraudulent bikers in ride-sharing. Applied statistical hypothesis testing and
+          anomaly detection to identify suspicious trip patterns, simulating production-level fraud analysis for mobility platforms.
+        </p>
+      </li>
+
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">
+          <a href="https://github.com/Behradsadeghi/essay-writer-agent" target="_blank" rel="noopener noreferrer">
+            Essay Agent
+          </a>
+        </h4>
+
+        <p class="timeline-text">
+          Essay Agent is an intelligent assistant for writing essays, built with LangGraph and Streamlit.
+          It guides you through the full cycle of essay creation: planning, researching, drafting, and critiquing.
+        </p>
+      </li>
+
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">
+          <a href="https://github.com/Behradsadeghi/Anatomy-of-a-Blockbuster" target="_blank" rel="noopener noreferrer">
+            Anatomy of a Blockbuster
+          </a>
+        </h4>
+
+        <p class="timeline-text">
+          This project investigates what factors contribute to a movie becoming a blockbuster.
+          Using the Kaggle Movies Dataset, we analyze how genre, budget, runtime, release date, cast & crew, and production companies influence box office revenue and audience reception.
+        </p>
+      </li>
+
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">
+          <a href="https://github.com/Behradsadeghi/PotholeSegmentation" target="_blank" rel="noopener noreferrer">
+            PotholeSegmentation
+          </a>
+        </h4>
+
+        <p class="timeline-text">
+          This project focuses on the development and application of an advanced deep learning model, specifically YOLOv9, for the detection
+          and segmentation of potholes in both images and video streams. Leveraging a custom dataset, the model has been fine-tuned to achieve high precision and recall 
+          rates through the use of optimized hyperparameters, data augmentation techniques, and advanced training strategies such as mixed precision training and gradient accumulation.
+          Key achievements include a mAP50 of 0.807 and a Mask mAP50 of 0.825, underscoring its effectiveness in practical applications.
+        </p>
+      </li>
+
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">
+          <a href="https://github.com/Behradsadeghi/Amazon-review" target="_blank" rel="noopener noreferrer">
+            Amazon Reviews
+          </a>
+        </h4>
+
+        <p class="timeline-text">
+          A machine learning model was created and trained on Amazon Reviews to perform sentiment analysis. The dataset underwent comprehensive 
+          preprocessing steps, including tokenization, removal of stopwords, lemmatization, stemming, elimination of tags and emojis, 
+          and normalization. Logistic Regression was utilized for the sentiment analysis task on Amazon Reviews. 
+          The repository includes resources and code for implementing various sentiment classification models, such as Embedding Models, BERT, and Simple Neural Networks.
+          <br>
+        </p>
+      </li>
+
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">
+          <a href="https://github.com/Behradsadeghi/AlzMRI-Net" target="_blank" rel="noopener noreferrer">
+            AlzMRI-Net
+          </a>
+        </h4>
+
+        <p class="timeline-text">
+          A computer vision project for medical image classification. AlzMRI-Net classifies brain MRI scans into four stages of Alzheimer's disease: MildDemented, 
+          ModerateDemented, NonDemented, and VeryMildDemented.
+          Built in PyTorch using transfer learning on a pre-trained EfficientNet-V2-L image backbone, fine-tuned on a specialized medical imaging dataset.
+          Advanced techniques such as mixed precision training and gradient accumulation are employed to enhance performance and efficiency. The model achieves 
+          a test accuracy of 99.19%, 
+          with comprehensive evaluation metrics, including precision, recall, and AUC, underscoring its effectiveness in Alzheimer's disease classification.
+          <br>
+        </p>
+      </li>
+
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">
+          <a href="https://github.com/Behradsadeghi/PaperSummarizer" target="_blank" rel="noopener noreferrer">
+            Paper Summarizer
+          </a>
+        </h4>
+
+        <p class="timeline-text">
+          The goal of this project is to simplify the process of reviewing the latest research papers by providing concise summaries generated using BART,
+          a state-of-the-art large language model (LLM). The tool fetches the most recent papers from PubMed and arXiv based on a user-defined query and 
+          presents them through an interactive interface. Users can easily select papers and view detailed summaries, making it easier to stay updated with current research.
+        </p>
+      </li>
+
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">
+          <a href="https://github.com/Behradsadeghi/Credit_Card_User_Clustering" target="_blank" rel="noopener noreferrer">
+            Credit Card User Clustering
+          </a>
+        </h4>
+
+        <p class="timeline-text">
+          This project involves clustering and segmenting around 9,000 active credit card users based on their behavior over a six-month period, using 18 
+          behavioral variables. Customer data is preprocessed and reduced to two dimensions via Principal Component Analysis (PCA). 
+          K-Means clustering is then applied to group customers into four distinct clusters, enabling analysis of their behaviors and identification of 
+          cluster-specific characteristics.
+        </p>
+      </li>
+
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">
+          <a href="https://github.com/Behradsadeghi/Predicting-Loan-Acceptance" target="_blank" rel="noopener noreferrer">
+            Predicting-Loan-Acceptance
+          </a>
+        </h4>
+
+        <p class="timeline-text">
+          In this project, I had access to a bank dataset to predict which individuals the bank should target with personal loan offers based on historical data. 
+          I also employed machine learning models like Logistic Regression, Naive Bayes, and K-Nearest Neighbors, and assessed loan acceptance probabilities.
+        </p>
+      </li>
+
+    </ol>
+
+  </section>
+
+</article>
+
+
+
+      <!--
+        - #Skills
+      -->
+
+      <article class="skills" data-page="skills">
+
+        <header>
+          <h2 class="h2 article-title">Skills</h2>
+        </header>
+
+        <div class="skills-wrapper">
+          <section class="skills-sec">
+            <div class="title-wrapper">
+              <div class="icon-box">
+                <ion-icon name="code-slash-outline"></ion-icon>
+              </div>
+
+              <h3 class="h3">Programming Languages</h3>
+            </div>
+
+            <div class="skills-container">
+              <div class="skills-details">
+                <ion-icon name="logo-python"></ion-icon>
+                <p>
+                  Python
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  SQL
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  R
+                </p>
+              </div>
+            </div>
+          </section>
+          <section class="skills-sec">
+            <div class="title-wrapper">
+              <div class="icon-box">
+                <ion-icon name="color-wand-outline"></ion-icon>
+              </div>
+
+              <h3 class="h3">Machine Learning</h3>
+            </div>
+
+            <div class="skills-container">
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  PyTorch
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Scikit-learn
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Transformers
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Natural Language Processing (NLP)
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Graph Neural Networks (GNNs)
+                </p>
+              </div>
+            </div>
+          </section>
+          <section class="skills-sec">
+            <div class="title-wrapper">
+              <div class="icon-box">
+                <ion-icon name="sparkles-outline"></ion-icon>
+              </div>
+
+              <h3 class="h3">LLM &amp; GenAI</h3>
+            </div>
+
+            <div class="skills-container">
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Vertex AI
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Gemini
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  RAG
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  LangGraph
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Google Agent Development Kit (ADK)
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  CrewAI
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Prompt Engineering
+                </p>
+              </div>
+            </div>
+          </section>
+          <section class="skills-sec">
+            <div class="title-wrapper">
+              <div class="icon-box">
+                <ion-icon name="cloud-outline"></ion-icon>
+              </div>
+
+              <h3 class="h3">Cloud &amp; Infrastructure</h3>
+            </div>
+
+            <div class="skills-container">
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Google Cloud Platform (GCP)
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Cloud Run
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  BigQuery
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Firestore
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Docker
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Terraform
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  FastAPI
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Git
+                </p>
+              </div>
+            </div>
+          </section>
+          <section class="skills-sec">
+            <div class="title-wrapper">
+              <div class="icon-box">
+                <ion-icon name="bar-chart-outline"></ion-icon>
+              </div>
+
+              <h3 class="h3">Data</h3>
+            </div>
+
+            <div class="skills-container">
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Pandas
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  NumPy
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Matplotlib
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Seaborn
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  MongoDB
+                </p>
+              </div>
+            </div>
+          </section>
+          <section class="skills-sec">
+            <div class="title-wrapper">
+              <div class="icon-box">
+                <ion-icon name="globe-outline"></ion-icon>
+              </div>
+
+              <h3 class="h3">Languages</h3>
+            </div>
+
+            <div class="skills-container">
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  English (IELTS 7.0)
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Italian (Elementary)
+                </p>
+              </div>
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  Persian (Native)
+                </p>
+              </div>
+            </div>
+          </section>
+          <section class="skills-sec">
+            <div class="title-wrapper">
+              <div class="icon-box">
+                <ion-icon name="desktop-outline"></ion-icon>
+              </div>
+
+              <h3 class="h3">Operating Systems</h3>
+            </div>
+
+            <div class="skills-container">
+              <div class="skills-details">
+                <ion-icon name="logo-tux"></ion-icon>
+                <p>
+                  Linux(Ubuntu)
+                </p>
+              </div>
+
+              <div class="skills-details">
+                <ion-icon name="logo-windows"></ion-icon>
+                <p>
+                  Windows
+                </p>
+              </div>
+
+              <div class="skills-details">
+                <ion-icon name="logo-apple"></ion-icon>
+                <p>
+                  MacOs
+                </p>
+              </div>
+            </div>
+          </section>
+          <section class="skills-sec">
+            <div class="title-wrapper">
+              <div class="icon-box">
+                <ion-icon name="build-outline"></ion-icon>
+              </div>
+
+              <h3 class="h3">Extra Tools</h3>
+            </div>
+
+            <div class="skills-container">
+              <div class="skills-details">
+                <div class="skills-dot">
+                  <span></span>
+                </div>
+                <p>
+                  LaTeX
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+      </article>
+
+
+      <!--
+        - #BLOG
+      -->
+
+    </div>
+
+  </main>
+
+
+
+
+
+
+  <!--
+    - custom js link
+  -->
+  <script src="./assets/js/script.js"></script>
+
+  <!--
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>

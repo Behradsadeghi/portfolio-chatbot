@@ -1,0 +1,11 @@
+# NEVER commit the API key
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS noise
+.DS_Store

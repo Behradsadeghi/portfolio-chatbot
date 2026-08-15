@@ -1,0 +1,15 @@
+# Render.com deployment config.
+# Chera Render: free tier dare, Docker nemikhad, va az GitHub khodkar
+# deploy mikone. Free instance ba'd az 15 daghighe bi-karie mikhabe -
+# avvalin request-e ba'di ~30 sanie tool mikeshe (cold start).
+services:
+  - type: web
+    name: portfolio-chatbot
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn scripts.api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false   # dasti tuye dashboard set mishe, na tuye in file

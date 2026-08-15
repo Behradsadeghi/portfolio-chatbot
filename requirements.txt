@@ -1,0 +1,11 @@
+# --- Step 1: extracting content from the site ---
+beautifulsoup4==4.12.3      # parse index.html into clean text
+
+# --- Step 2: embeddings + retrieval ---
+google-genai==0.8.0         # official Gemini API client (personal API key, not Vertex AI)
+numpy==2.1.3                # exact cosine similarity over a small set of vectors
+python-dotenv==1.0.1        # load the API key from .env instead of hardcoding it
+
+# --- Step 4: serving the API ---
+fastapi==0.115.6            # HTTP layer for the /chat endpoint
+uvicorn[standard]==0.34.0   # ASGI server that actually runs FastAPI

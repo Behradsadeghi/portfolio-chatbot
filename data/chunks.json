@@ -1,0 +1,142 @@
+[
+  {
+    "section": "about",
+    "title": "About Behrad Sadeghi",
+    "text": "I am an AI/ML Engineer currently building production LLM systems at Softlab S.p.A. in Milan, where I design multi-agent pipelines, RAG systems, and structured-output architectures on Google Cloud and Vertex AI using Gemini. Before that, I built a real-time fraud detection system at SnappBox, serving machine learning inference for a ride-sharing platform at scale. I'm currently pursuing an M.Sc. in Data Science for Economics and Health at the University of Milan, and I'm passionate about turning research-grade ML ideas into reliable, production-ready systems — from agentic LLM workflows to graph-based and deep learning models. Interests: Agentic & Multi-Agent Systems, Retrieval-Augmented Generation, LLM Evaluation & Observability, Production ML Systems, Graph Neural Networks, Fraud Detection."
+  },
+  {
+    "section": "contact",
+    "title": "Contact information",
+    "text": "You can reach Behrad Sadeghi through the following. Email: behradsadeghi.gu@gmail.com Phone: +39 3518261801 Location: Milan, Italy Linkedin: https://www.linkedin.com/in/behradsadeghi/ Github: https://github.com/Behradsadeghi"
+  },
+  {
+    "section": "education",
+    "title": "University of Milan (UniMi)",
+    "text": "University of Milan (UniMi) (2025 — Present). M.Sc in Data Science for Economics and Health"
+  },
+  {
+    "section": "education",
+    "title": "University of Guilan",
+    "text": "University of Guilan (2019 — 2024). B.Sc in Computer Engineering CGPA: 3.69/4"
+  },
+  {
+    "section": "work_experience",
+    "title": "AI Engineer — Softlab S.p.A.",
+    "text": "AI Engineer — Softlab S.p.A. (May 2026 - Present · Milan, Italy). • Architected an automated monitoring platform for a 7-stage AI pipeline, computing KPI metrics from Firestore and surfacing root-cause failures from noisy Cloud Logging output — deployed as a scheduled, Terraform-managed Cloud Run Job. • Designed and implemented an end-to-end Vertex AI batch inference pipeline that automatically summarized and classified previously unprocessed customer calls using Gemini structured outputs, eliminating manual first-pass triage while achieving 94% agreement with client-validated classifications and zero parsing failures. • Engineered strict, campaign-specific response schemas that constrain Gemini outputs to a fixed set of valid categories, eliminating hallucinated or malformed model outputs across concurrent Vertex AI batch jobs — all within a fully configuration-driven architecture that lets new campaigns launch without modifying prompts or model code."
+  },
+  {
+    "section": "work_experience",
+    "title": "Machine Learning Engineer — Fraud Detection, SnappBox",
+    "text": "Machine Learning Engineer — Fraud Detection, SnappBox (Sep 2024 - Oct 2025 · Tehran, Iran). • Designed and deployed an end-to-end fraud detection system processing thousands of ride events daily, serving real-time inference via FastAPI REST APIs on Docker and Google Cloud. Engineered scalable feature pipelines in BigQuery, reducing false positives by 20% compared to the previous rule-based system. • Developed machine learning models to detect anomalous rider behavior and coordinated fraud patterns, improving detection precision by 15%. Designed behavioral fraud indicators that helped avert an estimated 15–20% of fraud losses."
+  },
+  {
+    "section": "work_experience",
+    "title": "Machine Learning Developer Intern — Infinite Modern Technology",
+    "text": "Machine Learning Developer Intern — Infinite Modern Technology (Feb 2023 - Aug 2023 · Tehran, Iran). • Processed and analyzed real-world datasets using Pandas, NumPy, and Seaborn; built automated EDA pipelines that reduced manual reporting time and surfaced actionable insights for business stakeholders. • Trained and evaluated supervised and unsupervised ML models (classification, clustering) using Scikit-learn; tuned hyperparameters and validated results through cross-validation to support data-driven product decisions."
+  },
+  {
+    "section": "work_experience",
+    "title": "Research Assistant — University of Guilan",
+    "text": "Research Assistant — University of Guilan (Feb 2022 - Jan 2023 · Rasht, Iran). • Led development of a cross-attention-based model for Nasal Fracture Detection on a novel, previously unexplored clinical dataset."
+  },
+  {
+    "section": "project",
+    "title": "Transaction Fraud Detection Using GNNs and Tabular Models",
+    "url": "https://github.com/Behradsadeghi/Transaction-Fraud-Detection",
+    "text": "Transaction Fraud Detection Using GNNs and Tabular Models: Built a fraud detection system combining supervised (Tabular Transformers, Neural Networks) and semi-supervised (GraphSAGE, Graph Attention Networks) models. Engineered a hybrid loss function for graph-based learning with only 15% labeled data, achieving competitive F1 scores under realistic label scarcity."
+  },
+  {
+    "section": "project",
+    "title": "FraudRide-Analytics",
+    "url": "https://github.com/Behradsadeghi/FraudRide-Analytics",
+    "text": "FraudRide-Analytics: Analytics pipeline for detecting fraudulent bikers in ride-sharing. Applied statistical hypothesis testing and anomaly detection to identify suspicious trip patterns, simulating production-level fraud analysis for mobility platforms."
+  },
+  {
+    "section": "project",
+    "title": "Essay Agent",
+    "url": "https://github.com/Behradsadeghi/essay-writer-agent",
+    "text": "Essay Agent: Essay Agent is an intelligent assistant for writing essays, built with LangGraph and Streamlit. It guides you through the full cycle of essay creation: planning, researching, drafting, and critiquing."
+  },
+  {
+    "section": "project",
+    "title": "Anatomy of a Blockbuster",
+    "url": "https://github.com/Behradsadeghi/Anatomy-of-a-Blockbuster",
+    "text": "Anatomy of a Blockbuster: This project investigates what factors contribute to a movie becoming a blockbuster. Using the Kaggle Movies Dataset, we analyze how genre, budget, runtime, release date, cast & crew, and production companies influence box office revenue and audience reception."
+  },
+  {
+    "section": "project",
+    "title": "PotholeSegmentation",
+    "url": "https://github.com/Behradsadeghi/PotholeSegmentation",
+    "text": "PotholeSegmentation: This project focuses on the development and application of an advanced deep learning model, specifically YOLOv9, for the detection and segmentation of potholes in both images and video streams. Leveraging a custom dataset, the model has been fine-tuned to achieve high precision and recall rates through the use of optimized hyperparameters, data augmentation techniques, and advanced training strategies such as mixed precision training and gradient accumulation. Key achievements include a mAP50 of 0.807 and a Mask mAP50 of 0.825, underscoring its effectiveness in practical applications."
+  },
+  {
+    "section": "project",
+    "title": "Amazon Reviews",
+    "url": "https://github.com/Behradsadeghi/Amazon-review",
+    "text": "Amazon Reviews: A machine learning model was created and trained on Amazon Reviews to perform sentiment analysis. The dataset underwent comprehensive preprocessing steps, including tokenization, removal of stopwords, lemmatization, stemming, elimination of tags and emojis, and normalization. Logistic Regression was utilized for the sentiment analysis task on Amazon Reviews. The repository includes resources and code for implementing various sentiment classification models, such as Embedding Models, BERT, and Simple Neural Networks."
+  },
+  {
+    "section": "project",
+    "title": "AlzMRI-Net",
+    "url": "https://github.com/Behradsadeghi/AlzMRI-Net",
+    "text": "AlzMRI-Net: A computer vision project for medical image classification. AlzMRI-Net classifies brain MRI scans into four stages of Alzheimer's disease: MildDemented, ModerateDemented, NonDemented, and VeryMildDemented. Built in PyTorch using transfer learning on a pre-trained EfficientNet-V2-L image backbone, fine-tuned on a specialized medical imaging dataset. Advanced techniques such as mixed precision training and gradient accumulation are employed to enhance performance and efficiency. The model achieves a test accuracy of 99.19%, with comprehensive evaluation metrics, including precision, recall, and AUC, underscoring its effectiveness in Alzheimer's disease classification."
+  },
+  {
+    "section": "project",
+    "title": "Paper Summarizer",
+    "url": "https://github.com/Behradsadeghi/PaperSummarizer",
+    "text": "Paper Summarizer: The goal of this project is to simplify the process of reviewing the latest research papers by providing concise summaries generated using BART, a state-of-the-art large language model (LLM). The tool fetches the most recent papers from PubMed and arXiv based on a user-defined query and presents them through an interactive interface. Users can easily select papers and view detailed summaries, making it easier to stay updated with current research."
+  },
+  {
+    "section": "project",
+    "title": "Credit Card User Clustering",
+    "url": "https://github.com/Behradsadeghi/Credit_Card_User_Clustering",
+    "text": "Credit Card User Clustering: This project involves clustering and segmenting around 9,000 active credit card users based on their behavior over a six-month period, using 18 behavioral variables. Customer data is preprocessed and reduced to two dimensions via Principal Component Analysis (PCA). K-Means clustering is then applied to group customers into four distinct clusters, enabling analysis of their behaviors and identification of cluster-specific characteristics."
+  },
+  {
+    "section": "project",
+    "title": "Predicting-Loan-Acceptance",
+    "url": "https://github.com/Behradsadeghi/Predicting-Loan-Acceptance",
+    "text": "Predicting-Loan-Acceptance: In this project, I had access to a bank dataset to predict which individuals the bank should target with personal loan offers based on historical data. I also employed machine learning models like Logistic Regression, Naive Bayes, and K-Nearest Neighbors, and assessed loan acceptance probabilities."
+  },
+  {
+    "section": "skills",
+    "title": "Programming Languages",
+    "text": "Programming Languages: Python, SQL, R."
+  },
+  {
+    "section": "skills",
+    "title": "Machine Learning",
+    "text": "Machine Learning: PyTorch, Scikit-learn, Transformers, Natural Language Processing (NLP), Graph Neural Networks (GNNs)."
+  },
+  {
+    "section": "skills",
+    "title": "LLM & GenAI",
+    "text": "LLM & GenAI: Vertex AI, Gemini, RAG, LangGraph, Google Agent Development Kit (ADK), CrewAI, Prompt Engineering."
+  },
+  {
+    "section": "skills",
+    "title": "Cloud & Infrastructure",
+    "text": "Cloud & Infrastructure: Google Cloud Platform (GCP), Cloud Run, BigQuery, Firestore, Docker, Terraform, FastAPI, Git."
+  },
+  {
+    "section": "skills",
+    "title": "Data",
+    "text": "Data: Pandas, NumPy, Matplotlib, Seaborn, MongoDB."
+  },
+  {
+    "section": "skills",
+    "title": "Languages",
+    "text": "Languages: English (IELTS 7.0), Italian (Elementary), Persian (Native)."
+  },
+  {
+    "section": "skills",
+    "title": "Operating Systems",
+    "text": "Operating Systems: Linux(Ubuntu), Windows, MacOs."
+  },
+  {
+    "section": "skills",
+    "title": "Extra Tools",
+    "text": "Extra Tools: LaTeX."
+  }
+]
