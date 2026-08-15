@@ -184,6 +184,74 @@ def cleanup_old_entries(now: float) -> None:
     _last_cleanup = now
 
 
+REWRITE_PROMPT = """You rewrite a follow-up question into a standalone search \
+query, using the conversation that came before it.
+
+Output only the rewritten query. No explanation, no quotes.
+
+If the question is already self-contained, output it unchanged.
+
+Conversation:
+{history}
+
+Follow-up question: {question}
+
+Standalone search query:"""
+
+
+def rewrite_query(message: str, history: list[Turn]) -> str:
+    """
+    CHERA IN LAZEM SHOD
+    -------------------
+    Tariche faghat be marhale-ye GENERATION mirasid, na RETRIEVAL. Ya'ni
+    vaghti user minevise "from when", ma hamun do kalame ro embed
+    mikardim. "from when" hich mohtava-ye ma'naii nadare - vector-esh be
+    hich chunk-e khasi nazdik nist, pas 8 ta chunk-e bi-rabt barmigasht.
+
+    Natije: model migoft "I don't have that information" - dar hali ke
+    chunk-e Softlab daghighan "(May 2026 - Present)" ro dasht. Model
+    eshtebah nemikard; chizi ke lazem dasht behesh NEMIRESID.
+
+    Pas ghabl az retrieval, soal ro mostaghel mikonim:
+        "from when"  ->  "When did Behrad start working at Softlab?"
+
+    HAZINE: ye API call-e ezafi, VALI faghat vaghti tariche vojud dare.
+    Soal-e aval - ke aksar-e session-ha faghat hamun-e - dast nakhorde
+    mimune.
+
+    Age rewrite fail she, be soal-e asli barmigardim. Ye laye-ye komaki
+    nabayad kol-e endpoint ro bendaze.
+    """
+    if not history:
+        return message
+
+    transcript = "\n".join(
+        f"{'Visitor' if t.role == 'user' else 'Assistant'}: {t.text}"
+        for t in history[-MAX_HISTORY_TURNS:]
+    )
+
+    try:
+        response = _client.models.generate_content(
+            model=GENERATION_MODEL,
+            contents=REWRITE_PROMPT.format(history=transcript, question=message),
+            config=types.GenerateContentConfig(
+                temperature=0.0,
+                max_output_tokens=64,
+            ),
+        )
+        rewritten = (response.text or "").strip()
+    except Exception as exc:
+        print(f"[rewrite failed] {type(exc).__name__}: {exc}")
+        return message
+
+    # Guardrail: age khoruji khali ya bi-ma'ni bud, asl ro negah midarim.
+    if not rewritten or len(rewritten) > 300:
+        return message
+
+    print(f"[rewrite] {message!r} -> {rewritten!r}")
+    return rewritten
+
+
 def check_rate_limit(ip: str) -> None:
     now = time.time()
     cleanup_old_entries(now)
@@ -242,9 +310,13 @@ def chat(body: ChatRequest, request: Request):
     check_rate_limit(client_ip(request))
 
     try:
+        # Ba tariche, soal-e kootah ro be ye soal-e MOSTAGHEL tabdil
+        # mikonim ghabl az retrieval. (Tozih-e kamel tuye rewrite_query.)
+        search_query = rewrite_query(body.message, body.history)
+
         embed_response = _client.models.embed_content(
             model=EMBEDDING_MODEL,
-            contents=body.message,
+            contents=search_query,
             config=types.EmbedContentConfig(
                 task_type="RETRIEVAL_QUERY",
                 output_dimensionality=EMBEDDING_DIM,

@@ -50,9 +50,21 @@ survives restarts and horizontal scaling without a session store.
 
 Follow-ups drove this. Once the UI implies continuity, someone asks "what about
 the second one?" — and a server with no history answers something unrelated,
-which reads as a broken bot rather than a missing feature. Retrieval still runs
-per question: history disambiguates the *question*, it isn't treated as a
-source of facts.
+which reads as a broken bot rather than a missing feature.
+
+**Query rewriting before retrieval.** Passing history to the generation step
+alone was not enough, and the failure was instructive. Asked "from when?" after
+a question about the current role, the assistant replied that it didn't have
+that information — while the retrieved passage plainly read
+`(May 2026 - Present)`. The model was not the problem. Retrieval was embedding
+the literal string "from when", which carries no semantic content and matches
+nothing, so the relevant chunk never reached the model at all.
+
+Follow-ups are now rewritten into standalone queries before embedding —
+"from when?" becomes "When did Behrad start working at Softlab?" — at the cost
+of one extra call, and only when history exists. First questions, which are most
+sessions, are untouched. If the rewrite fails the original question is used;
+a helper step should not be able to take down the endpoint.
 
 **Measured, not assumed.** A 12-question golden set with hand-labelled
 expected chunks, scored by recall@k.
