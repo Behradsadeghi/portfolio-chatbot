@@ -71,6 +71,11 @@ ALLOWED_ORIGINS = [
 #                 tanha chiz-i-e ke jeloshe migire.
 #
 # Hardud eftetahi-e; ba tavajoh be traffic-e vaghei tanzim mishe.
+# Chand turn-e akhar be model dade beshe. Bishtar = context-e behtar
+# vali token-e bishtar; kamtar = arzun-tar vali follow-up ha mishkanan.
+# 6 ya'ni 3 ta rad-o-badl - baraye chatbot-e ye site kafie.
+MAX_HISTORY_TURNS = 6
+
 RATE_LIMIT_REQUESTS = 10
 RATE_LIMIT_WINDOW = 60  # sanie
 GLOBAL_LIMIT_REQUESTS = 200
@@ -91,10 +96,28 @@ _last_cleanup = time.time()
 CLEANUP_INTERVAL = 300  # sanie
 
 
+class Turn(BaseModel):
+    role: str = Field(pattern="^(user|assistant)$")
+    text: str = Field(min_length=1, max_length=4000)
+
+
 class ChatRequest(BaseModel):
     # max_length ye guardrail-e sade-st: jelo-ye prompt-e 100 hezar
     # kalame-i ro migire ke faghat token misuzune.
     message: str = Field(min_length=1, max_length=500)
+
+    # CHERA HISTORY LAZEM SHOD
+    # ------------------------
+    # Ta hala har request mostaghel bud. Vali ta vaghti UI neshun mide
+    # goftogu edame dare, user follow-up miporse: "un dovomi chi bud?"
+    # Bedun-e tariche, model nemidune "dovomi" chie va javab-e bi-rabt
+    # mide - va bazdid-konande fekr mikone bot ahmagh-e, na inke
+    # feature nadare.
+    #
+    # Server tariche ro NEGAH NEMIDARE. Client har bar mifreste. In
+    # ya'ni server stateless mimune (chand instance, restart, hich
+    # kodum moshkeli nist) va ma hich chat-i ro zakhire nemikonim.
+    history: list[Turn] = Field(default_factory=list, max_length=MAX_HISTORY_TURNS)
 
 
 class ChatResponse(BaseModel):
@@ -235,14 +258,38 @@ def chat(body: ChatRequest, request: Request):
         retrieved = [(_chunks[i], float(scores[i])) for i in top]
 
         context = build_context(retrieved)
-        user_message = (
-            f"Context passages:\n\n{context}\n\n"
-            f"Visitor's question: {body.message}"
+
+        # CHERA CONTEXT HAR BAR DOBARE FERESTADE MISHE
+        # -------------------------------------------
+        # Retrieval baraye HAR soal jodagane ejra mishe, pas chunk-haye
+        # marbut be soal-e feli miad - na un-haii ke 3 soal ghabl lazem
+        # budan. Tariche faghat baraye fahmidan-e ejara'at ("un dovomi",
+        # "chera?") be kar mire, na be onvan-e manba'-e vaghayeh.
+        contents = []
+        for turn in body.history[-MAX_HISTORY_TURNS:]:
+            contents.append(
+                types.Content(
+                    role="user" if turn.role == "user" else "model",
+                    parts=[types.Part(text=turn.text)],
+                )
+            )
+        contents.append(
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part(
+                        text=(
+                            f"Context passages:\n\n{context}\n\n"
+                            f"Visitor's question: {body.message}"
+                        )
+                    )
+                ],
+            )
         )
 
         response = _client.models.generate_content(
             model=GENERATION_MODEL,
-            contents=user_message,
+            contents=contents,
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_PROMPT,
                 temperature=TEMPERATURE,

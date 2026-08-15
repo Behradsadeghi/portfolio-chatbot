@@ -66,6 +66,7 @@
       border-radius: 22px;
       box-shadow: 0 18px 50px rgba(0, 0, 0, .45);
       display: flex; flex-direction: column; overflow: hidden;
+      position: relative;
       height: 0; opacity: 0;
       transition: height .32s cubic-bezier(.4,0,.2,1), opacity .22s ease;
     }
@@ -168,6 +169,73 @@
       border-color: rgba(255,255,255,.2);
     }
 
+    /* ---- scroll-to-bottom (mesl-e fin.ai) ---- */
+    .bsc-jump {
+      position: absolute; left: 50%; bottom: 14px;
+      transform: translateX(-50%) scale(.8);
+      width: 30px; height: 30px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(60,60,66,.95);
+      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+      color: var(--white-2, hsl(0,0%,98%));
+      cursor: pointer; display: flex; align-items: center;
+      justify-content: center; opacity: 0; pointer-events: none;
+      box-shadow: 0 4px 14px rgba(0,0,0,.4);
+      transition: opacity .2s ease, transform .2s ease;
+    }
+    .bsc-jump.bsc-show {
+      opacity: 1; pointer-events: auto; transform: translateX(-50%) scale(1);
+    }
+
+    /* ---- history dropdown ---- */
+    .bsc-titlebtn {
+      display: flex; align-items: center; gap: 6px; flex: 1;
+      background: none; border: none; padding: 0; cursor: pointer;
+      font-family: inherit; text-align: left;
+      color: var(--white-2, hsl(0,0%,98%));
+      font-size: 14px; font-weight: 500;
+    }
+    .bsc-titlebtn svg { transition: transform .2s ease; flex-shrink: 0; }
+    .bsc-root.bsc-hist .bsc-titlebtn svg { transform: rotate(180deg); }
+
+    .bsc-history {
+      position: absolute; top: 50px; left: 14px; right: 14px; z-index: 2;
+      background: rgba(52,52,58,.97);
+      -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px; padding: 6px;
+      box-shadow: 0 12px 32px rgba(0,0,0,.5);
+      max-height: 240px; overflow-y: auto;
+      display: none;
+    }
+    .bsc-root.bsc-hist .bsc-history { display: block; }
+
+    .bsc-hitem {
+      display: flex; align-items: center; gap: 10px; width: 100%;
+      background: none; border: none; cursor: pointer;
+      padding: 9px 10px; border-radius: 9px; font-family: inherit;
+      text-align: left; transition: background .13s ease;
+    }
+    .bsc-hitem:hover { background: rgba(255,255,255,.08); }
+    .bsc-hdot {
+      width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0;
+      background: var(--text-gradient-yellow,
+        linear-gradient(to right, hsl(207,86%,57%), hsl(197,86%,57%)));
+    }
+    .bsc-hlabel {
+      flex: 1; min-width: 0; font-size: 12.5px;
+      color: var(--white-2, hsl(0,0%,98%));
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .bsc-hage {
+      font-size: 11px; flex-shrink: 0;
+      color: var(--light-gray-70, hsla(0,0%,84%,.7));
+    }
+    .bsc-hempty {
+      padding: 12px 10px; font-size: 12px;
+      color: var(--light-gray-70, hsla(0,0%,84%,.7));
+    }
+
     /* ---- input bar (hamishe peyda) ---- */
     .bsc-bar {
       display: flex; align-items: center; gap: 8px;
@@ -220,7 +288,14 @@
     <div class="bsc-panel">
       <div class="bsc-head">
         <div class="bsc-mark">B</div>
-        <div class="bsc-title">Ask about Behrad</div>
+        <button class="bsc-titlebtn" aria-label="Past conversations">
+          <span>Ask about Behrad</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.4"
+               stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
         <button class="bsc-collapse" aria-label="Close chat">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                stroke="currentColor" stroke-width="2.2"
@@ -229,7 +304,15 @@
           </svg>
         </button>
       </div>
+      <div class="bsc-history"></div>
       <div class="bsc-log"></div>
+      <button class="bsc-jump" aria-label="Scroll to latest">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.6"
+             stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
     </div>
 
     <div class="bsc-bar">
@@ -252,6 +335,64 @@
   const input = root.querySelector(".bsc-bar input");
   const sendBtn = root.querySelector(".bsc-send");
   const collapseBtn = root.querySelector(".bsc-collapse");
+  const titleBtn = root.querySelector(".bsc-titlebtn");
+  const titleLabel = titleBtn.querySelector("span");
+  const historyBox = root.querySelector(".bsc-history");
+  const jumpBtn = root.querySelector(".bsc-jump");
+
+  // --- conversation store ------------------------------------------------
+  //
+  // CHERA localStorage VA NA SERVER
+  // -------------------------------
+  // Server-e ma stateless-e va hich goftogu-ii ro zakhire nemikone -
+  // in amdi-e: ye site-e portfolio nabayad chat-e bazdid-konande-ha ro
+  // negah dare. Tariche mal-e KHOD-E user-e va tuye browser-esh mimune.
+  //
+  // Ma'ni-sh: history rooye device-e digeh nemiad. Baraye fin.ai un
+  // moshkel-e (support-e chand-canale), baraye ma na.
+  const STORE_KEY = "bsc:conversations";
+  const MAX_STORED = 8;
+  const MAX_HISTORY_TURNS = 6;
+
+  function loadConversations() {
+    // localStorage momkene khamush bashe (private mode, setting-e user).
+    // Un vaght widget bayad kar kone, faghat bedun-e tariche.
+    try {
+      const raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveConversations(list) {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify(list.slice(0, MAX_STORED)));
+    } catch (e) {
+      /* quota por-e ya khamush-e - bikhial */
+    }
+  }
+
+  let conversations = loadConversations();
+  let current = null;
+
+  function persist() {
+    if (!current || !current.turns.length) return;
+    conversations = conversations.filter((c) => c.id !== current.id);
+    conversations.unshift(current);
+    saveConversations(conversations);
+  }
+
+  function relativeAge(ts) {
+    const mins = Math.floor((Date.now() - ts) / 60000);
+    if (mins < 1) return "now";
+    if (mins < 60) return mins + "m";
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return hrs + "h";
+    const days = Math.floor(hrs / 24);
+    if (days < 30) return days + "d";
+    return Math.floor(days / 30) + "mo";
+  }
 
   // --- helpers -----------------------------------------------------------
 
@@ -343,11 +484,102 @@
     log.scrollTop = log.scrollHeight;
   }
 
+  // --- history dropdown --------------------------------------------------
+  function renderHistory() {
+    historyBox.innerHTML = "";
+
+    // "New conversation" hamishe aval-e. Bedun-e in, ye bar ke goftogu
+    // shoru she hich rah-i baraye shoru-e ye ta-ye taze nist.
+    if (current && current.turns.length) {
+      const fresh = document.createElement("button");
+      fresh.className = "bsc-hitem";
+      const plus = document.createElement("div");
+      plus.className = "bsc-hdot";
+      const lbl = document.createElement("span");
+      lbl.className = "bsc-hlabel";
+      lbl.textContent = "New conversation";
+      fresh.append(plus, lbl);
+      fresh.onclick = () => {
+        startNew();
+        root.classList.remove("bsc-hist");
+        open();
+        input.focus();
+      };
+      historyBox.appendChild(fresh);
+    }
+
+    const others = conversations.filter((c) => !current || c.id !== current.id);
+
+    if (!others.length) {
+      const p = document.createElement("div");
+      p.className = "bsc-hempty";
+      p.textContent = "No earlier conversations.";
+      historyBox.appendChild(p);
+      return;
+    }
+
+    others.forEach((conv) => {
+      const btn = document.createElement("button");
+      btn.className = "bsc-hitem";
+
+      const dot = document.createElement("div");
+      dot.className = "bsc-hdot";
+
+      const label = document.createElement("span");
+      label.className = "bsc-hlabel";
+      label.textContent = conv.title;
+
+      const age = document.createElement("span");
+      age.className = "bsc-hage";
+      age.textContent = relativeAge(conv.updatedAt);
+
+      btn.append(dot, label, age);
+      btn.onclick = () => openConversation(conv);
+      historyBox.appendChild(btn);
+    });
+  }
+
+  function openConversation(conv) {
+    persist();
+    current = conv;
+    log.innerHTML = "";
+    suggBox = null;
+    conv.turns.forEach((t) => {
+      if (t.role === "user") {
+        addMessage(t.text, "bsc-user");
+      } else {
+        const el = addMessage("", "bsc-bot");
+        renderAnswer(el, t.text, t.sources);
+      }
+    });
+    root.classList.remove("bsc-hist");
+    updatePlaceholder();
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function startNew() {
+    persist();
+    current = null;
+    log.innerHTML = "";
+    suggBox = null;
+    greeted = false;
+    updatePlaceholder();
+  }
+
+  // "Continue conversation" — mesl-e fin.ai. Ye signal-e kuchik vali
+  // vazeh: goftogu tamum nashode, mituni edame bedi.
+  function updatePlaceholder() {
+    input.placeholder =
+      current && current.turns.length
+        ? "Continue conversation"
+        : "Ask anything about Behrad…";
+  }
+
   let greeted = false;
   function open() {
     if (root.classList.contains("bsc-open")) return;
     root.classList.add("bsc-open");
-    if (!greeted) {
+    if (!greeted && (!current || !current.turns.length)) {
       addMessage(
         "Hi — I can answer questions about Behrad's background, experience, and projects, using what's on this site.",
         "bsc-bot"
@@ -359,9 +591,28 @@
 
   async function send(message) {
     open();
+    root.classList.remove("bsc-hist");
     if (suggBox) { suggBox.remove(); suggBox = null; }
 
+    if (!current) {
+      current = {
+        id: "c_" + Date.now().toString(36),
+        title: message,          // avvalin soal onvan mishe
+        updatedAt: Date.now(),
+        turns: [],
+      };
+    }
+
+    // Tariche GHABL az ezafe kardan-e payam-e feli gerefte mishe —
+    // vagarna soal ro do bar be model midim.
+    const history = current.turns
+      .slice(-MAX_HISTORY_TURNS)
+      .map((t) => ({ role: t.role, text: t.text }));
+
     addMessage(message, "bsc-user");
+    current.turns.push({ role: "user", text: message });
+    current.updatedAt = Date.now();
+
     input.value = "";
     input.disabled = sendBtn.disabled = true;
 
@@ -371,7 +622,7 @@
       const res = await fetch(API_URL + "/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ message, history }),
       });
 
       if (res.status === 429) {
@@ -385,13 +636,26 @@
       const data = await res.json();
       pending.className = "bsc-msg bsc-bot";
       renderAnswer(pending, data.answer, data.sources);
+
+      current.turns.push({
+        role: "assistant",
+        text: data.answer,
+        sources: data.sources,
+      });
+      current.updatedAt = Date.now();
+      persist();
     } catch (err) {
       console.error("[chat-widget]", err);
       pending.className = "bsc-msg bsc-err";
       pending.textContent =
         "Couldn't reach the assistant. It may be waking up — try again in a moment.";
+      // soal-e nafrestade ro az tariche dar miarim, vagarna daf'e-ye
+      // ba'd be onvan-e context-e ye javab-i ke hich vaght nayumad
+      // ferestade mishe
+      current.turns.pop();
     } finally {
       input.disabled = sendBtn.disabled = false;
+      updatePlaceholder();
       input.focus();
       log.scrollTop = log.scrollHeight;
     }
@@ -415,14 +679,45 @@
   };
 
   collapseBtn.onclick = () => {
-    root.classList.remove("bsc-open");
+    root.classList.remove("bsc-open", "bsc-hist");
     input.blur();
   };
 
+  titleBtn.onclick = () => {
+    const opening = !root.classList.contains("bsc-hist");
+    if (opening) renderHistory();
+    root.classList.toggle("bsc-hist", opening);
+  };
+
+  // CHERA IN DEKME LAZEM-E
+  // ----------------------
+  // Vaghti user bala scroll karde ta ye javab-e ghadimi ro bekhune va
+  // javab-e jadid miad, un motevajeh nemishe. Auto-scroll ham eshtebah-e:
+  // matni ke dare mikhune ro mipare. Pas ye dekme neshun midim.
+  jumpBtn.onclick = () => {
+    log.scrollTo({ top: log.scrollHeight, behavior: "smooth" });
+  };
+
+  log.addEventListener("scroll", () => {
+    const atBottom =
+      log.scrollHeight - log.scrollTop - log.clientHeight < 40;
+    jumpBtn.classList.toggle("bsc-show", !atBottom);
+  });
+
+  // click-e birun -> dropdown baste she
+  document.addEventListener("click", (e) => {
+    if (!root.contains(e.target)) root.classList.remove("bsc-hist");
+  });
+
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && root.classList.contains("bsc-open")) {
-      root.classList.remove("bsc-open");
+    if (e.key !== "Escape") return;
+    if (root.classList.contains("bsc-hist")) {
+      root.classList.remove("bsc-hist");   // aval dropdown
+    } else if (root.classList.contains("bsc-open")) {
+      root.classList.remove("bsc-open");   // ba'd khod-e panel
       input.blur();
     }
   });
+
+  window.addEventListener("beforeunload", persist);
 })();
