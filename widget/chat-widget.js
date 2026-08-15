@@ -222,6 +222,18 @@
       background: var(--text-gradient-yellow,
         linear-gradient(to right, hsl(207,86%,57%), hsl(197,86%,57%)));
     }
+    /* Radif-e "New conversation" bayad AZ NAZAR-E BASARI fargh dashte
+       bashe ba goftogu-haye ghabli — vagarna ye morabba'-e abi-ye digeh-st
+       va kasi motevajeh nemishe amal-esh fargh dare. */
+    .bsc-hnew .bsc-hdot {
+      background: none; border: 1px dashed rgba(255,255,255,.3);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--light-gray, hsl(0,0%,84%));
+    }
+    .bsc-hsep {
+      height: 1px; margin: 5px 8px;
+      background: rgba(255,255,255,.09);
+    }
     .bsc-hlabel {
       flex: 1; min-width: 0; font-size: 12.5px;
       color: var(--white-2, hsl(0,0%,98%));
@@ -492,12 +504,20 @@
     // shoru she hich rah-i baraye shoru-e ye ta-ye taze nist.
     if (current && current.turns.length) {
       const fresh = document.createElement("button");
-      fresh.className = "bsc-hitem";
+      fresh.className = "bsc-hitem bsc-hnew";
+
       const plus = document.createElement("div");
       plus.className = "bsc-hdot";
+      plus.innerHTML =
+        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" ' +
+        'stroke="currentColor" stroke-width="3" stroke-linecap="round">' +
+        '<line x1="12" y1="5" x2="12" y2="19"></line>' +
+        '<line x1="5" y1="12" x2="19" y2="12"></line></svg>';
+
       const lbl = document.createElement("span");
       lbl.className = "bsc-hlabel";
       lbl.textContent = "New conversation";
+
       fresh.append(plus, lbl);
       fresh.onclick = () => {
         startNew();
@@ -506,6 +526,10 @@
         input.focus();
       };
       historyBox.appendChild(fresh);
+
+      const sep = document.createElement("div");
+      sep.className = "bsc-hsep";
+      historyBox.appendChild(sep);
     }
 
     const others = conversations.filter((c) => !current || c.id !== current.id);
