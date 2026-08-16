@@ -37,7 +37,9 @@ from pydantic import BaseModel, Field
 from .config import (
     EMBEDDING_DIM,
     EMBEDDING_MODEL,
+    FALLBACK_MODEL,
     GENERATION_MODEL,
+    REWRITE_MODEL,
     TEMPERATURE,
     TOP_K,
 )
@@ -184,6 +186,50 @@ def cleanup_old_entries(now: float) -> None:
     _last_cleanup = now
 
 
+def is_quota_error(exc: Exception) -> bool:
+    """
+    CHERA MATNI VA NA BA TYPE-E EXCEPTION
+    -------------------------------------
+    SDK hame-ye khataye 4xx ro be onvan ye ClientError mide - 429-e
+    quota ba 400-e bad request yek type daran. Pas bayad be mohtava
+    negah konim.
+
+    In shekannde-st (age Google matn ro avaz kone, mishkane) - vali
+    natije-ye shekastan-esh faghat ine ke fallback nemizanad va
+    error-e adi bar migarde. Fail-safe.
+    """
+    text = str(exc)
+    return "RESOURCE_EXHAUSTED" in text or "429" in text
+
+
+def generate_with_fallback(contents, config):
+    """
+    Aval model-e asli, va age quota-sh tamum shod, model-e fallback.
+
+    CHERA IN KAR MIKONE
+    -------------------
+    Quota-ye free tier BE EZAYE HAR MODEL hesab mishe. Pas vaghti
+    gemini-2.5-flash tamum mishe, gemini-2.5-flash-lite hanuz budget-e
+    DAST-NAKHORDE-ye khodesh ro dare. Fallback ya'ni do barabar zarfiat,
+    na tekrar-e hamun.
+
+    Faghat rooye khataye QUOTA fallback mizanim. Age prompt-e ma kharab
+    bashe (400) ya key eshtebah bashe (403), model-e digeh ham hamun
+    khata ro mide - retry faghat vaght va budget talaf mikone.
+    """
+    try:
+        return _client.models.generate_content(
+            model=GENERATION_MODEL, contents=contents, config=config
+        )
+    except Exception as exc:
+        if not is_quota_error(exc):
+            raise
+        print(f"[fallback] {GENERATION_MODEL} quota hit -> {FALLBACK_MODEL}")
+        return _client.models.generate_content(
+            model=FALLBACK_MODEL, contents=contents, config=config
+        )
+
+
 REWRITE_PROMPT = """You rewrite a follow-up question into a standalone search \
 query, using the conversation that came before it.
 
@@ -232,11 +278,22 @@ def rewrite_query(message: str, history: list[Turn]) -> str:
 
     try:
         response = _client.models.generate_content(
-            model=GENERATION_MODEL,
+            model=REWRITE_MODEL,
             contents=REWRITE_PROMPT.format(history=transcript, question=message),
             config=types.GenerateContentConfig(
                 temperature=0.0,
-                max_output_tokens=64,
+                max_output_tokens=128,
+                # THINKING RO KHAMUSH MIKONIM
+                # ---------------------------
+                # Model-haye 2.5 ghabl az javab token kharj-e "fekr kardan"
+                # mikonan. Ba saghf-e 64 token, thinking hame-ye budget ro
+                # khord va rewrite NESFE birun umad:
+                #     'from when' -> 'When did'
+                # Un ham az soal-e asli badtar bud.
+                #
+                # Rewrite estedlal nemikhad - jaygozini-ye zamir ba esm-e.
+                # Pas thinking khamush, saghf balatar.
+                thinking_config=types.ThinkingConfig(thinking_budget=0),
             ),
         )
         rewritten = (response.text or "").strip()
@@ -359,10 +416,9 @@ def chat(body: ChatRequest, request: Request):
             )
         )
 
-        response = _client.models.generate_content(
-            model=GENERATION_MODEL,
-            contents=contents,
-            config=types.GenerateContentConfig(
+        response = generate_with_fallback(
+            contents,
+            types.GenerateContentConfig(
                 system_instruction=SYSTEM_PROMPT,
                 temperature=TEMPERATURE,
             ),
@@ -381,6 +437,8 @@ def chat(body: ChatRequest, request: Request):
             ],
         )
 
+    except HTTPException:
+        raise
     except Exception as exc:
         # CHERA PAYAM-E VAGHEI RO BE USER NEMIDIM
         # ---------------------------------------
@@ -388,6 +446,21 @@ def chat(body: ChatRequest, request: Request):
         # (masir-e file, bakhshi az key, sakhtar-e system). Be user ye
         # payam-e omumi midim, va asl-e error ro log mikonim.
         print(f"[ERROR] {type(exc).__name__}: {exc}")
+
+        # QUOTA-YE UPSTREAM RO JODA MIKONIM
+        # ---------------------------------
+        # Vaghti quota-ye rooz-e Gemini tamum mishe, in ye khataye ma
+        # nist - ye mahdudiyat-e movaghat-e. "Something went wrong" be
+        # user mige barnamash kharab-e, dar hali ke faghat bayad farda
+        # biad. Va MA ham vaghti log ro mibinim donbal-e bug migardim
+        # ke vojud nadare.
+        # Injaa residan ya'ni HAR DO model quota-shun tamum shode.
+        if is_quota_error(exc):
+            raise HTTPException(
+                status_code=503,
+                detail="The assistant has hit its daily limit. Please try again tomorrow.",
+            )
+
         raise HTTPException(
             status_code=500,
             detail="Something went wrong. Please try again.",

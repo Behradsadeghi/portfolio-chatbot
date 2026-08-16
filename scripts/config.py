@@ -69,6 +69,28 @@ TOP_K = 8
 # Ba `python scripts/list_models.py` check kon ke hanuz mojud bashe.
 GENERATION_MODEL = "gemini-2.5-flash"
 
+# CHERA REWRITE MODEL-E JODA DARE
+# -------------------------------
+# Quota-ye free tier BE EZAYE HAR MODEL hesab mishe - tuye error-e 429
+# vazeh neveshte: quotaDimensions {model: gemini-2.5-flash}.
+#
+# Ya'ni age rewrite ro ba hamun model-e asli bezanim, har soal-e follow-up
+# DO ta az budget-e mahdud mikhore. Ba ye model-e joda, rewrite budget-e
+# khodesh ro dare va model-e asli dast nakhorde mimune.
+#
+# Flash-lite baraye in kar kaamelan kafie: rewrite ye kar-e mekaniki-e
+# (jaygozini-ye zamir ba esm), na estedlal.
+REWRITE_MODEL = "gemini-2.5-flash-lite"
+
+# Vaghti quota-ye model-e asli tamum she, be in switch mikonim.
+# Chon quota per-model-e, in amalan ye budget-e dovom-e - na ye
+# tekrar-e hamun budget.
+#
+# HAZINE: flash-lite kam-tavan-tar-e. Javab-ha kootah-tar va sathi-tar
+# mishan. Vali ye javab-e kami zaif-tar az "sarvis dar dastres nist"
+# behtare.
+FALLBACK_MODEL = "gemini-2.5-flash-lite"
+
 # 0 = hamishe hamun javab az hamun context. Baraye eval lazem-e:
 # age har bar javab avaz she, nemituni begi behtar shod ya na.
 TEMPERATURE = 0.0

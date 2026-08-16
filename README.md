@@ -145,6 +145,33 @@ actually used, and they make wrong answers traceable to a chunk. But `[3]`
 points at a passage the visitor never sees, so it renders as a source list
 instead — the data is kept, only the display is cleaned.
 
+## Operating within a free tier
+
+The Gemini free tier allows 20 requests per day *per model*. That dimension is
+the useful part: quota is tracked separately for each model, so work can be
+spread across them rather than queued behind one budget.
+
+Follow-up rewriting runs on `gemini-2.5-flash-lite`, not the answering model.
+It is a mechanical substitution — pronouns for names — and putting it on the
+main model would have made every follow-up cost two of a very small budget.
+
+Answers fall back to `flash-lite` when `flash` returns a quota error, which
+roughly doubles daily capacity. Fallback fires on quota errors only: a
+malformed prompt or a bad key fails identically on the second model, so
+retrying would spend budget to reach the same error.
+
+Quota exhaustion returns 503, not 500. They are different conditions and
+deserve different handling: 500 tells the visitor something is broken and sends
+the maintainer looking for a bug that doesn't exist, while 503 says the service
+is temporarily out of capacity. The widget renders that as "try again tomorrow"
+and points at the contact details in the sidebar.
+
+Thinking is disabled for the rewrite call. Gemini 2.5 models spend output
+tokens reasoning before answering; with a 64-token ceiling, reasoning consumed
+the budget and the rewrite came back truncated — `"from when"` became
+`"When did"`, which retrieves worse than the original question. Reasoning off,
+ceiling raised.
+
 ## Running it
 
 ```bash
