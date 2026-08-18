@@ -428,7 +428,37 @@
     </div>
 
     <ol class="timeline-list">
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">
+          <a href="https://github.com/Behradsadeghi/portfolio-chatbot" target="_blank" rel="noopener noreferrer">
+            Grounded RAG Assistant for This Site
+          </a>
+        </h4>
 
+        <p class="timeline-text">
+          The chat assistant on this page. A production retrieval-augmented generation (RAG) system that answers
+          questions about my background using this site as its only knowledge source, with source attribution and
+          explicit refusal when the retrieved context doesn't contain the answer. Retrieval quality is driven by an
+          evaluation harness over a hand-labelled golden set, measured with recall@k — which was used to reject two
+          plausible optimizations that turned out to degrade ranking. Supports conversational follow-ups through
+          LLM-based query rewriting, and the public endpoint is hardened with two-layer rate limiting, request
+          validation, and automatic model fallback on quota exhaustion. Built with FastAPI, the Gemini API, and NumPy;
+          deployed on Render, with a vanilla-JavaScript widget on the static site.
+          <br>
+        </p>
+      </li>
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">
+          <a href="https://github.com/Behradsadeghi/essay-writer-agent" target="_blank" rel="noopener noreferrer">
+            Essay Agent
+          </a>
+        </h4>
+
+        <p class="timeline-text">
+          Essay Agent is an intelligent assistant for writing essays, built with LangGraph and Streamlit.
+          It guides you through the full cycle of essay creation: planning, researching, drafting, and critiquing.
+        </p>
+      </li>
       <li class="timeline-item">
         <h4 class="h4 timeline-item-title">
           <a href="https://github.com/Behradsadeghi/Transaction-Fraud-Detection" target="_blank" rel="noopener noreferrer">
@@ -453,19 +483,6 @@
         <p class="timeline-text">
           Analytics pipeline for detecting fraudulent bikers in ride-sharing. Applied statistical hypothesis testing and
           anomaly detection to identify suspicious trip patterns, simulating production-level fraud analysis for mobility platforms.
-        </p>
-      </li>
-
-      <li class="timeline-item">
-        <h4 class="h4 timeline-item-title">
-          <a href="https://github.com/Behradsadeghi/essay-writer-agent" target="_blank" rel="noopener noreferrer">
-            Essay Agent
-          </a>
-        </h4>
-
-        <p class="timeline-text">
-          Essay Agent is an intelligent assistant for writing essays, built with LangGraph and Streamlit.
-          It guides you through the full cycle of essay creation: planning, researching, drafting, and critiquing.
         </p>
       </li>
 
@@ -990,7 +1007,7 @@
   -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
+  <script src="assets/js/chat-widget.js" data-api="https://portfolio-chatbot-tdnm.onrender.com"></script>
 </body>
 
 </html>

@@ -63,6 +63,7 @@ GOLDEN_SET = [
         "query": "how can I contact him?",
         "expected": ["Contact information"],
     },
+    
     {
         "query": "where has he worked?",
         "expected": [
@@ -100,6 +101,10 @@ GOLDEN_SET = [
     {
         "query": "has he built anything with agents?",
         "expected": ["Essay Agent"],
+    },
+    {
+        "query": "how does this chatbot work?",
+        "expected": ["Grounded RAG Assistant for This Site"],
     },
     {
         "query": "does he speak Italian?",

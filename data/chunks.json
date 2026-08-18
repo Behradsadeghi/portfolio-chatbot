@@ -41,6 +41,18 @@
   },
   {
     "section": "project",
+    "title": "Grounded RAG Assistant for This Site",
+    "url": "https://github.com/Behradsadeghi/portfolio-chatbot",
+    "text": "Grounded RAG Assistant for This Site: The chat assistant on this page. A production retrieval-augmented generation (RAG) system that answers questions about my background using this site as its only knowledge source, with source attribution and explicit refusal when the retrieved context doesn't contain the answer. Retrieval quality is driven by an evaluation harness over a hand-labelled golden set, measured with recall@k — which was used to reject two plausible optimizations that turned out to degrade ranking. Supports conversational follow-ups through LLM-based query rewriting, and the public endpoint is hardened with two-layer rate limiting, request validation, and automatic model fallback on quota exhaustion. Built with FastAPI, the Gemini API, and NumPy; deployed on Render, with a vanilla-JavaScript widget on the static site."
+  },
+  {
+    "section": "project",
+    "title": "Essay Agent",
+    "url": "https://github.com/Behradsadeghi/essay-writer-agent",
+    "text": "Essay Agent: Essay Agent is an intelligent assistant for writing essays, built with LangGraph and Streamlit. It guides you through the full cycle of essay creation: planning, researching, drafting, and critiquing."
+  },
+  {
+    "section": "project",
     "title": "Transaction Fraud Detection Using GNNs and Tabular Models",
     "url": "https://github.com/Behradsadeghi/Transaction-Fraud-Detection",
     "text": "Transaction Fraud Detection Using GNNs and Tabular Models: Built a fraud detection system combining supervised (Tabular Transformers, Neural Networks) and semi-supervised (GraphSAGE, Graph Attention Networks) models. Engineered a hybrid loss function for graph-based learning with only 15% labeled data, achieving competitive F1 scores under realistic label scarcity."
@@ -50,12 +62,6 @@
     "title": "FraudRide-Analytics",
     "url": "https://github.com/Behradsadeghi/FraudRide-Analytics",
     "text": "FraudRide-Analytics: Analytics pipeline for detecting fraudulent bikers in ride-sharing. Applied statistical hypothesis testing and anomaly detection to identify suspicious trip patterns, simulating production-level fraud analysis for mobility platforms."
-  },
-  {
-    "section": "project",
-    "title": "Essay Agent",
-    "url": "https://github.com/Behradsadeghi/essay-writer-agent",
-    "text": "Essay Agent: Essay Agent is an intelligent assistant for writing essays, built with LangGraph and Streamlit. It guides you through the full cycle of essay creation: planning, researching, drafting, and critiquing."
   },
   {
     "section": "project",
